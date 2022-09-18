@@ -14,7 +14,7 @@
   }
   ```
 */
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
 import {
     Bars3Icon,
@@ -33,6 +33,33 @@ export default function Header() {
 
     const [cartOpen, setCartOpen] = useState(false);
     const [cartProducts, setCartProducts] = useState(["", ""]);
+
+    const [ count , setCount] = useState(0)
+
+    
+
+    const cartRefresh = () => {
+        if(!localStorage.getItem("cart")){
+            localStorage.setItem("cart", "[]")
+        }
+
+        setCartProducts(JSON.parse(localStorage.getItem("cart")))
+    }
+
+    
+    useEffect(() => { 
+        // console.log("refreshe)
+        
+        cartRefresh()
+        function storageEventHandler(event) {
+            setCartOpen(true)
+            setCartProducts(JSON.parse(localStorage.getItem("cart")))
+        }
+        window.addEventListener("storage", storageEventHandler);
+        return () => {
+            window.removeEventListener("storage", storageEventHandler);
+        }
+    }, []);
 
     return (
         <div className="bg-white ">

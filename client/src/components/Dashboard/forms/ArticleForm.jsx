@@ -7,9 +7,11 @@ export default function ArticleForm({
     setOpenModal,
     viewType,
     elementParent,
+    refresh,
+    setRefresh
 }) {
 
-
+    // alert(refresh)
     const [element, setElement] = useState(elementParent != null ? elementParent : {name:"", price:0, picture:""})
     
     const handleChange =  e => {
@@ -22,18 +24,10 @@ export default function ArticleForm({
         
     };
 
-    const saveChanges = async () => {
-        let config = {
-            headers: {
-              'Access-Control-Allow-Origin': true,
-              
-              }
-            }
-            
-        console.log("i was in save changes 1")
+    const editItem = async (element) => {
         if(viewType=="add"){
             await axios
-            .post("http://localhost:8080/api/articles", element, config)
+            .post("http://localhost:8080/api/articles", element)
             .then((res) => {
                 console.log("Success :"+ JSON.stringify(res.data))
             })
@@ -41,11 +35,10 @@ export default function ArticleForm({
             console.log("error adding element  : " + err);
             });
         }else{
-        console.log("i was in save changes 2")
-        console.log("i was in save changes 2")
+      
 
             await axios
-            .put("http://localhost:8080/api/articles", element)
+            .put("http://localhost:8080/api/articles/"+element.id, element)
             .then((res) => {
                 console.log("Success :"+ JSON.stringify(res.data))
             })
@@ -53,9 +46,14 @@ export default function ArticleForm({
             console.log("error editing element  : " + err);
             });
         }
+        setRefresh(!refresh)
+    }
+    const saveChanges = async () => {
         
+            
+        editItem(element);
         setOpenModal(false);
-        
+
     };
 
     const cancelChanges = () => {

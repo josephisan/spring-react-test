@@ -18,8 +18,12 @@ public class Order {
     @Column(name = "reference")
     private String reference;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @Column(name = "articles")
+    @ManyToMany
+    @JoinTable(
+            name="order_article",
+            joinColumns = @JoinColumn(name="order"),
+            inverseJoinColumns = @JoinColumn(name="article")
+    )
     private List<Article> articles;
 
     @CreationTimestamp

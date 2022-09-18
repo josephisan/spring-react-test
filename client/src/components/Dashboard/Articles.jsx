@@ -6,32 +6,12 @@ import DeleteForm from "./forms/DeleteForm";
 import ModalContainer from "./ModalContainer/ModalContainer";
 import axios from "axios"
 export default function Articles() {
-    const [articles, setArticles] = useState([
-        {
-            name: 'Earthen Bottle',
-            price: 48,
-            picture: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-01.jpg',
-          },
-          {
-            name: 'Nomad Tumbler',
-            price: 35,
-            picture: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-02.jpg',
-          },
-          {
-            name: 'Focus Paper Refill',
-            price: 89,
-            picture: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-03.jpg',
-          },
-          {
-            name: 'Machined Mechanical Pencil',
-            price: 35,
-            picture: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-04.jpg',
-          },
-    ])
+    
     const [openModal, setOpenModal] = useState(false)
     const [myForm, setMyForm] = useState({})
+    const [refresh, setRefresh] = useState(false)
 
-
+    const [articles, setArticles] = useState([])
     const getArticles = async () => {
 
         await axios
@@ -49,7 +29,7 @@ export default function Articles() {
     
     useEffect(() => {
         getArticles();
-    }, []);
+    }, [refresh]);
 
     
     return (
@@ -75,6 +55,8 @@ export default function Articles() {
                                     setOpenModal
                                 }
                                 viewType={"add"}
+                                refresh={refresh}
+                                setRefresh={setRefresh}
                             />
                         );
                         setOpenModal(true);
@@ -85,38 +67,37 @@ export default function Articles() {
             </div>
 
             {/* start list articls */}
-            {
-                articles != null   ?
-                <div class="bg-white w-full shadow-md rounded my-6 ">
+            
+                <div className="bg-white w-full shadow-md rounded my-6 ">
                     <table
                         style={{ borderRadius: 25 }}
-                        class=" w-full rounded-lg  bg-indigo-500 overflow-hidden"
+                        className=" w-full rounded-lg  bg-indigo-500 overflow-hidden"
                     >
                         <thead>
                             <tr
-                                class=" text-white  text-18 leading-normal w-full bg-indigo-500 shadow-lg"
+                                className=" text-white  text-18 leading-normal w-full bg-indigo-500 shadow-lg"
                                 
                                 style={{
                                     fontFamily: "Poppins",
                                     
                                 }}
                             >
-                                <th class="py-3 px-6 text-center whitespace-nowrap ">
+                                <th className="py-3 px-6 text-center whitespace-nowrap ">
                                     Picture
                                 </th>
-                                <th class="py-3 px-6 text-left whitespace-nowrap ">
+                                <th className="py-3 px-6 text-left whitespace-nowrap ">
                                     Name
                                 </th>
-                                <th class="py-3 px-6 text-left whitespace-nowrap ">
+                                <th className="py-3 px-6 text-left whitespace-nowrap ">
                                     Price
                                 </th>
-                                <th class="py-3 px-6 text-center whitespace-nowrap ">
+                                <th className="py-3 px-6 text-center whitespace-nowrap ">
                                     Modifier
                                 </th>
                             </tr>
                         </thead>
                         <tbody
-                            class="text-gray-600 text-sm font-light"
+                            className="text-gray-600 text-sm font-light"
                             style={{
                                 fontFamily: "Poppins",
                                 fontWeight: 500,
@@ -125,10 +106,10 @@ export default function Articles() {
                             {articles.map((item, index) => (
                                 <tr
                                     key={index}
-                                    class="border-b border-gray-200 bg-white hover:bg-gray-100 text-16"
+                                    className="border-b border-gray-200 bg-white hover:bg-gray-100 text-16"
                                 >
-                                    <td class="py-3 px-6 text-left whitespace-nowrap ">
-                                        <div class="flex justify-center max-h-80 items-center">
+                                    <td className="py-3 px-6 text-left whitespace-nowrap ">
+                                        <div className="flex justify-center max-h-80 items-center">
                                             <img
                                                 style={{
                                                     height:200,
@@ -142,23 +123,23 @@ export default function Articles() {
 
                                     
 
-                                    <td class="py-3 px-6 text-left whitespace-nowrap ">
-                                        <div class="flex justify-start items-center">
+                                    <td className="py-3 px-6 text-left whitespace-nowrap ">
+                                        <div className="flex justify-start items-center">
                                             <span>{item.name}</span>
                                         </div>
                                     </td>
 
-                                    <td class="py-3 px-6 text-left whitespace-nowrap ">
-                                        <div class="flex justify-start items-center">
+                                    <td className="py-3 px-6 text-left whitespace-nowrap ">
+                                        <div className="flex justify-start items-center">
                                             <span>{item.price + " DH"}</span>
                                         </div>
                                     </td>
 
                                     {/* buttons Modifier */}
-                                    <td class="py-3 px-6 text-left whitespace-nowrap ">
-                                        <div class="flex item-center justify-center">
+                                    <td className="py-3 px-6 text-left whitespace-nowrap ">
+                                        <div className="flex item-center justify-center">
                                             <button
-                                                class="w-6 mr-2 transform hover:text-purple-500 hover:scale-110"
+                                                className="w-6 mr-2 transform hover:text-purple-500 hover:scale-110"
                                                 onClick={() => {
                                                     setMyForm(
                                                         <ArticleForm
@@ -168,6 +149,8 @@ export default function Articles() {
                                                             }
                                                             viewType={"view"}
                                                             elementParent={item}
+                                                            setRefresh={setRefresh}
+                                                            refresh={refresh}
                                                         />
                                                     );
                                                     setOpenModal(true);
@@ -180,21 +163,21 @@ export default function Articles() {
                                                     stroke="currentColor"
                                                 >
                                                     <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
                                                         stroke-width="2"
                                                         d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
                                                     />
                                                     <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
                                                         stroke-width="2"
                                                         d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                                                     />
                                                 </svg>
                                             </button>
                                             <button
-                                                class="w-6 mr-2 transform hover:text-purple-500 hover:scale-110"
+                                                className="w-6 mr-2 transform hover:text-purple-500 hover:scale-110"
                                                 onClick={() => {
                                                     setMyForm(
                                                         <ArticleForm
@@ -204,6 +187,8 @@ export default function Articles() {
                                                             }
                                                             viewType={"edit"}
                                                             elementParent={item}
+                                                            setRefresh={setRefresh}
+                                                            refresh={refresh}
                                                         />
                                                     );
                                                     setOpenModal(true);
@@ -216,23 +201,24 @@ export default function Articles() {
                                                     stroke="currentColor"
                                                 >
                                                     <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
                                                         stroke-width="2"
                                                         d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
                                                     />
                                                 </svg>
                                             </button>
                                             <button
-                                                class="w-6 mr-2 transform hover:text-purple-500 hover:scale-110"
+                                                className="w-6 mr-2 transform hover:text-purple-500 hover:scale-110"
                                                 onClick={() => {
                                                     setMyForm(
                                                         <DeleteForm
                                                             setOpenModal={
                                                                 setOpenModal
                                                             }
-                                                            viewType={"edit"}
                                                             element={item}
+                                                            refresh={refresh}
+                                                            setRefresh={setRefresh}
                                                         />
                                                     );
                                                     setOpenModal(true);
@@ -245,8 +231,8 @@ export default function Articles() {
                                                     stroke="currentColor"
                                                 >
                                                     <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
                                                         stroke-width="2"
                                                         d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                                                     />
@@ -259,11 +245,18 @@ export default function Articles() {
                             ))}
                         </tbody>
                     </table>
+                    {
+                        articles.length == 0 ?
+                        <div className=" w-full flex justify-center items-center p-10">
+                        No Elements
+                    </div>
+                    :
+                    <></>
+                    }
+                    
                 </div>
 
-                :
-                <></>
-            }
+              
 
             {/* end list articls */}
 

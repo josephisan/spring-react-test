@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 @RestController
 @RequestMapping("/api")
 public class OrderController {
@@ -52,13 +52,13 @@ public class OrderController {
 
     @PostMapping("/orders")
     public ResponseEntity<Order> createOrder(@RequestBody Order order) {
-        try {
+        //try {
             Order _order = orderRepository
                     .save(new Order( order.getArticles() ));
             return new ResponseEntity<>(_order, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        //} catch (Exception e) {
+          //  return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        //}
 
 
     }
