@@ -18,7 +18,7 @@ public class Article {
     @Column(name = "price")
     private Float price;
 
-    @Column(name = "picture")
+    @Column(name = "picture", columnDefinition = "TEXT")
     private String picture;
 
 
@@ -54,6 +54,10 @@ public class Article {
 
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    public long getId() {
+        return id;
     }
 
     @Override

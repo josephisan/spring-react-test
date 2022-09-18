@@ -6,18 +6,16 @@ import axios from "axios";
 export default function ArticleForm({
     setOpenModal,
     viewType,
-    candidatureParent,
-    
-
+    elementParent,
 }) {
 
 
-    const [candidature, setCandidature] = useState(candidatureParent != null ? candidatureParent : {})
+    const [element, setElement] = useState(elementParent != null ? elementParent : {name:"", price:0, picture:""})
     
     const handleChange =  e => {
         const { name, value } = e.target;
-        setCandidature(candidature => ({
-            ...candidature,
+        setElement(element => ({
+            ...element,
             [name]: value
         }));
 
@@ -25,16 +23,37 @@ export default function ArticleForm({
     };
 
     const saveChanges = async () => {
+        let config = {
+            headers: {
+              'Access-Control-Allow-Origin': true,
+              
+              }
+            }
+            
+        console.log("i was in save changes 1")
+        if(viewType=="add"){
+            await axios
+            .post("http://localhost:8080/api/articles", element, config)
+            .then((res) => {
+                console.log("Success :"+ JSON.stringify(res.data))
+            })
+            .catch((err) => {
+            console.log("error adding element  : " + err);
+            });
+        }else{
+        console.log("i was in save changes 2")
+        console.log("i was in save changes 2")
 
-        // await axios
-        //     .put("/api/contacts", candidature)
-        //     .then((res) => {
-        //         console.log("trying to update : " + JSON.stringify(candidature))
-        //         console.log("changed sub success :" + JSON.stringify(res.data))
-        //     })
-        //     .catch((err) => {
-        //     console.log("error getting sub  : " + err);
-        //     });
+            await axios
+            .put("http://localhost:8080/api/articles", element)
+            .then((res) => {
+                console.log("Success :"+ JSON.stringify(res.data))
+            })
+            .catch((err) => {
+            console.log("error editing element  : " + err);
+            });
+        }
+        
         setOpenModal(false);
         
     };
@@ -46,14 +65,39 @@ export default function ArticleForm({
    
    
 
+    const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
     
+    const handleChangeFile = (e) => {
+        const { name } = e.target;
 
+        var file = e.target.files[0];
+
+        if (!validImageTypes.includes(file["type"])) {
+            alert("Image invalide !");
+        } else {
+            if (Math.floor(file.size) / 1024 > 800) {
+                alert(
+                    "La taille de l'image ne doit pas dépasser 400 Ko"
+                );
+            } else {
+                var reader = new FileReader();
+
+                reader.onload = function (event) {
+                    setElement((element) => ({
+                        ...element,
+                        [name]: event.target.result,
+                    }));
+                };
+
+                reader.readAsDataURL(file);
+            }
+        }
+    };
 
     
 
 
     useEffect(() => {
-        
     }, []);
     
    
@@ -69,13 +113,13 @@ export default function ArticleForm({
                     color: "#2A2A64",
                 }}
             >
-                Contact
+                Element
                 <span
                     style={{
                         fontWeight: 400,
                     }}
                 >
-                    &nbsp;&nbsp;{candidature.inscription}
+                    &nbsp;&nbsp;{element.name}
                 </span>
             </div>
             <div
@@ -85,15 +129,14 @@ export default function ArticleForm({
                 
            
                 
-               
-                {/* start Prénom  */}
+               {/* start name */}
                 <div className=" w-full lg:col-span-6 md:col-span-6 sm:col-span-1 flex flex-col justify-start items-start gap-2 ">
                     <div className="content-start text-14 font-semibold">
-                        Prénom :
+                        Name :
                     </div>
                     <input
                         className="w-full px-4 py-4 bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:bg-white focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        value={candidature.prenom}
+                        value={element.name}
                         style={{
                             borderRadius: 6,
                             fontFamily: "Poppins",
@@ -102,18 +145,92 @@ export default function ArticleForm({
                             boxShadow: "6px 6px 20px rgba(0, 0, 0, 0.05)",
                             fontSize: 14,
                         }}
-                        disabled={viewType == "edit" ? false : true}
-                        name="prenom"
+                        disabled={viewType == "edit" || viewType == "add" ? false : true}
+                        name="name"
                         onChange={handleChange}
                     />
                 </div>
-                {/* end Prénom */}
+               {/* start name */}
+
+
+               {/* start price */}
+               <div className=" w-full lg:col-span-6 md:col-span-6 sm:col-span-1 flex flex-col justify-start items-start gap-2 ">
+                    <div className="content-start text-14 font-semibold">
+                        Price :
+                    </div>
+                    <input
+                        className="w-full px-4 py-4 bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:bg-white focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        value={element.price}
+                        style={{
+                            borderRadius: 6,
+                            fontFamily: "Poppins",
+                            fontWeight: 400,
+                            paddingLeft: 15,
+                            boxShadow: "6px 6px 20px rgba(0, 0, 0, 0.05)",
+                            fontSize: 14,
+                        }}
+                        disabled={viewType == "edit" || viewType == "add" ? false : true}
+                        name="price"
+                        onChange={handleChange}
+                        type="number"
+                    />
+                </div>
+               {/* start price */}
+
+               {/* start landingImage  */}
+               <div
+                    className=" w-full lg:col-span-6 md:col-span-6 sm:col-span-1  flex flex-col justify-start items-start gap-2 "
+                    style={{}}
+                >
+                    <div
+                        className="flex flex-col gap-4 items-center justify-center py-2 w-full border border-gray-300"
+                        style={{
+                            borderRadius: 6,
+                        }}
+                    >
+                        {element.picture != "" && element.picture != null ? (
+                            <div className="relative w-2/3 " style={{height:300}}>
+                                <img
+                                    className="w-full h-full"
+                                    
+                                    src={element.picture}
+                                />
+                            </div>
+                        ) : (
+                            <div className="relative ">
+                                <div className="text-red-500 text-15">
+                                    Pas d'image
+                                </div>
+                            </div>
+                        )}
+                      
+                        <input
+                            id="imageInput"
+                            className="hidden "
+                            onChange={handleChangeFile}
+                            type={"file"}
+                            name={"picture"}
+                        />
+                        <button
+                            className="text-white bg-indigo-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-thin rounded-lg text-sm px-5 py-2 text-center inline-flex  dark:bg-blue-600 dark:hover:bg-blue1 dark:focus:ring-blue-800  content-end items-end"
+                            value="Valider les modifications"
+                            onClick={() =>
+                                document.getElementById("imageInput").click()
+                            }
+                        >
+                            Ajouter une image
+                        </button>
+                    </div>
+                </div>
+                {/* end landingImage */}
+
+
 
             </div>
             <div className="border-none  row  py-7 flex flex-row gap-2 w-full  justify-end">
                 <button
-                    className={"text-white bg-blue1  hover:bg-blue1 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex  dark:bg-blue-600 dark:hover:bg-blue1 dark:focus:ring-blue-800  content-end items-end "
-                        + (viewType !="edit" ? "invisible" : "")
+                    className={"text-white bg-indigo-500  hover:bg-blue1 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex  dark:bg-blue-600 dark:hover:bg-blue1 dark:focus:ring-blue-800  content-end items-end "
+                        + (viewType !="edit" && viewType != "add" ? "invisible" : "")
                     }
                     value="Valider les modifications"
                     onClick={saveChanges}

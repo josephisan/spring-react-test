@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lu.atozdigital.api.model.Article;
 import lu.atozdigital.api.repository.ArticleRepository;
 
-
+@CrossOrigin
 @RestController
 @RequestMapping("/api")
 public class ArticleController {
@@ -42,7 +42,7 @@ public class ArticleController {
                 articleRepository.findArticleByNameContains(name).forEach(articles::add);
 
             if (articles.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(articles, HttpStatus.OK);
             }
 
             return new ResponseEntity<>(articles, HttpStatus.OK);
@@ -65,15 +65,21 @@ public class ArticleController {
 
     @PostMapping("/articles")
     public ResponseEntity<Article> createArticle(@RequestBody Article article) {
-        try {
+        //try {
             Article _article = articleRepository
                     .save(new Article(article.getName(), article.getPrice(), article.getPicture()));
             return new ResponseEntity<>(_article, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        //} catch (Exception e) {
+          //  return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        //}
     }
 
+    /**
+     *
+     * @param id
+     * @param article
+     * @return
+     */
     @PutMapping("/articles/{id}")
     public ResponseEntity<Article> updateArticle(@PathVariable("id") long id, @RequestBody Article article) {
         Optional<Article> articleData = articleRepository.findById(id);

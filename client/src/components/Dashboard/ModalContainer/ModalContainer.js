@@ -36,7 +36,7 @@ export default function ModalContainer({openModal, setOpenModal, myForm}) {
             >
               <Dialog.Panel className="relative  rounded-lg text-left  
                 shadow-xl transform transition-all  
-                  w-[50%] lg:h-full max-h-[90%] overflow-y-auto px-3.5 py-2 bg-white flex flex-col justify-start items-center ">
+                  w-[50%]  max-h-[90%] overflow-y-auto px-3.5 py-2 bg-white flex flex-col justify-start items-center ">
                     <button className="absolute right-3 top-3 h-8 p-1 rounded-lg text-white w-8 bg-indigo-400 shadow-lg active:shadow"
                       onClick={()=> setOpenModal(false)}
                     >

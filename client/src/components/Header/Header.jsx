@@ -40,7 +40,7 @@ export default function Header() {
 
             <header className="relative bg-white">
                 <p className="flex h-10 items-center justify-center bg-indigo-600 px-4 text-sm font-medium text-white sm:px-6 lg:px-8">
-                    Livraison gratuite sur les produits + 1000 DHs
+                    Free Shipping for a cart sum of +1000 DH
                 </p>
 
                 <nav
@@ -99,7 +99,7 @@ export default function Header() {
                                         href="#"
                                         className="text-sm font-medium text-gray-700 hover:text-gray-800"
                                     >
-                                        Se connecter
+                                        Sign In
                                     </a>
                                     <span
                                         className="h-6 w-px bg-gray-200"
@@ -109,7 +109,7 @@ export default function Header() {
                                         href="#"
                                         className="text-sm font-medium text-gray-700 hover:text-gray-800"
                                     >
-                                        S'inscrire
+                                        Sign Up
                                     </a>
                                 </div>
 
