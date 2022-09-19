@@ -52,8 +52,11 @@ export default function Header() {
         
         cartRefresh()
         function storageEventHandler(event) {
-            setCartOpen(true)
+            
             setCartProducts(JSON.parse(localStorage.getItem("cart")))
+            if(cartProducts.length>0){
+                setCartOpen(true)
+            }
         }
         window.addEventListener("storage", storageEventHandler);
         return () => {

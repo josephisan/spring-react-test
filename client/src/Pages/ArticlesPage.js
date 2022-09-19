@@ -1,11 +1,11 @@
 import React from "react";
-import ListProducts from "../components/ListProducts/ListProducts";
+import Articles from "../components/Dashboard/Articles";
 
 const ArticlesPage = () => {
  
   
   return (
-    <ListProducts />
+    <Articles />
   );
 };
 

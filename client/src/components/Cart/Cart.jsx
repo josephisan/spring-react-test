@@ -65,7 +65,7 @@ export default function Cart({open, setOpen}) {
       delete articles["id"]
     }
     await axios
-      .post("http://localhost:8080/api/orders" , {articles: articles})
+      .post("http://localhost:8080/api/orders" , {articles: JSON.parse(localStorage.getItem("cart"))})
       .then((res) => {
           setArticles(res.data)
       })
@@ -75,7 +75,7 @@ export default function Cart({open, setOpen}) {
   }
   const checkout = () => {
     sendCheckout(articles);
-
+    setOpen(false)
 
     const fakeWindow = window.open('', '');
     fakeWindow.localStorage.setItem("cart", '[]')
